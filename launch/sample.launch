@@ -1,0 +1,11 @@
+<launch>
+  <node pkg="dynpick_driver" name="dynpick_driver_node" type="dynpick_driver_node" >
+    <param name="device" value="/dev/ttyUSB0" />
+    <param name="rate"   value="1000" />
+    <param name="frame_id"   value="/sensor" />
+  </node>
+  <node pkg="tf" type="static_transform_publisher" name="base_to_sensor"
+    args="0 0 0.5 0 0 0 /base /sensor 100" />
+  <node pkg="rviz" type="rviz" name="rviz"
+    args="-d $(find dynpick_driver)/launch/sample.rviz" />
+</launch>
