@@ -11,6 +11,7 @@
 
 #define true		1
 #define false		0
+#define DATA_LENGTH (27)
 
 int SetComAttr(int fdc)
 {
@@ -67,7 +68,7 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "dynpick_driver");
     ros::NodeHandle n, nh("~");
     nh.param<std::string>("device", devname, "/dev/ttyUSB0");
-    nh.param<std::string>("frame_id", frame_id, "/snesor");
+    nh.param<std::string>("frame_id", frame_id, "/sensor");
     nh.param<double>("rate", rate, 1000);
 
     ros::Publisher pub = n.advertise<geometry_msgs::WrenchStamped>("force", 1000);
@@ -103,7 +104,37 @@ int main(int argc, char **argv) {
         write(fdc, "R", 1);
 
         // Obtain single data
-        c = read(fdc, str, 27);
+        static int ct;
+#if 1
+        int len = 0, len_max = DATA_LENGTH;
+          while (len < len_max) {
+            c = read(fdc, str+len, DATA_LENGTH-len);
+            if ( c > 0) {
+              len +=c;
+            } else {
+              //ROS_ERROR("could not read c... %d  len... %d\n", c, len);
+              //printf("Oh dear, something went wrong with read()! %s\n", strerror(errno));
+              continue;
+            }}
+#else
+          ct = 0;
+          while (ct < 100) {
+            c = read(fdc, str, DATA_LENGTH);
+            if ( c == DATA_LENGTH) {
+              break;
+            } else {
+              printf("Oh dear, something went wrong with read()! %s\n", strerror(errno));
+              ct++;
+              continue;
+            }}
+
+#endif
+
+
+        if (c != DATA_LENGTH)
+            ROS_WARN("=== error reciving data ... n = %d ===\n", c);
+
+
         if (c < 27)
         {
             ROS_WARN("=== error reciving data ... n = %d ===", c);
