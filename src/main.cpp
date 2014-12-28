@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
 
     ros::Rate loop_rate(rate);
     while (ros::ok()) {
-        int c;
+        int c, len;
         char str[256];
         int tick;
         unsigned short data[6];
@@ -103,11 +103,21 @@ int main(int argc, char **argv) {
         write(fdc, "R", 1);
 
         // Obtain single data
-        c = read(fdc, str, 27);
-        if (c < 27)
-            {
-                ROS_WARN("=== error reciving data ... n = %d ===", c);
+#define DATA_LENGTH 27
+        len = 0;
+        while ( len < DATA_LENGTH ) {
+                c = read(fdc, str+len, DATA_LENGTH-len);
+                if (c > 0) {
+                    len += c;
+                } else {
+                    ROS_DEBUG("=== need to read more data ... n = %d (%d) ===", c, len);
+                    continue;
+                }
             }
+        if ( len != DATA_LENGTH ) {
+            ROS_WARN("=== error reciving data ... n = %d ===", c);
+        }
+
         sscanf(str, "%1d%4hx%4hx%4hx%4hx%4hx%4hx",
                &tick, &data[0], &data[1], &data[2], &data[3], &data[4], &data[5]);
 
