@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "dynpick_driver");
     ros::NodeHandle n, nh("~");
     nh.param<std::string>("device", devname, "/dev/ttyUSB0");
-    nh.param<std::string>("frame_id", frame_id, "/snesor");
+    nh.param<std::string>("frame_id", frame_id, "/sensor");
     nh.param<double>("rate", rate, 1000);
 
     ros::Publisher pub = n.advertise<geometry_msgs::WrenchStamped>("force", 1000);
