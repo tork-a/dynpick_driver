@@ -11,49 +11,50 @@
 
 #define true		1
 #define false		0
+#define DATA_LENGTH (27)
 
 int SetComAttr(int fdc)
-	{
-	int			n;
+{
+    int			n;
 
-	struct termios	term;
+    struct termios	term;
 
 
-	// Set baud rate
-	n = tcgetattr(fdc, &term);
-	if (n < 0)
-		goto over;
+    // Set baud rate
+    n = tcgetattr(fdc, &term);
+    if (n < 0)
+        goto over;
 
-	bzero(&term, sizeof(term));
+    bzero(&term, sizeof(term));
 
-	term.c_cflag = B921600 | CS8 | CLOCAL | CREAD;
-	term.c_iflag = IGNPAR;
-	term.c_oflag = 0;
-	term.c_lflag = 0;/*ICANON;*/
- 
-	term.c_cc[VINTR]    = 0;     /* Ctrl-c */ 
-	term.c_cc[VQUIT]    = 0;     /* Ctrl-? */
-	term.c_cc[VERASE]   = 0;     /* del */
-	term.c_cc[VKILL]    = 0;     /* @ */
-	term.c_cc[VEOF]     = 4;     /* Ctrl-d */
-	term.c_cc[VTIME]    = 0;
-	term.c_cc[VMIN]     = 0;
-	term.c_cc[VSWTC]    = 0;     /* '?0' */
-	term.c_cc[VSTART]   = 0;     /* Ctrl-q */ 
-	term.c_cc[VSTOP]    = 0;     /* Ctrl-s */
-	term.c_cc[VSUSP]    = 0;     /* Ctrl-z */
-	term.c_cc[VEOL]     = 0;     /* '?0' */
-	term.c_cc[VREPRINT] = 0;     /* Ctrl-r */
-	term.c_cc[VDISCARD] = 0;     /* Ctrl-u */
-	term.c_cc[VWERASE]  = 0;     /* Ctrl-w */
-	term.c_cc[VLNEXT]   = 0;     /* Ctrl-v */
-	term.c_cc[VEOL2]    = 0;     /* '?0' */
+    term.c_cflag = B921600 | CS8 | CLOCAL | CREAD;
+    term.c_iflag = IGNPAR;
+    term.c_oflag = 0;
+    term.c_lflag = 0;/*ICANON;*/
 
-//	tcflush(fdc, TCIFLUSH);
-	n = tcsetattr(fdc, TCSANOW, &term);
+    term.c_cc[VINTR]    = 0;     /* Ctrl-c */ 
+    term.c_cc[VQUIT]    = 0;     /* Ctrl-? */
+    term.c_cc[VERASE]   = 0;     /* del */
+    term.c_cc[VKILL]    = 0;     /* @ */
+    term.c_cc[VEOF]     = 4;     /* Ctrl-d */
+    term.c_cc[VTIME]    = 0;
+    term.c_cc[VMIN]     = 0;
+    term.c_cc[VSWTC]    = 0;     /* '?0' */
+    term.c_cc[VSTART]   = 0;     /* Ctrl-q */ 
+    term.c_cc[VSTOP]    = 0;     /* Ctrl-s */
+    term.c_cc[VSUSP]    = 0;     /* Ctrl-z */
+    term.c_cc[VEOL]     = 0;     /* '?0' */
+    term.c_cc[VREPRINT] = 0;     /* Ctrl-r */
+    term.c_cc[VDISCARD] = 0;     /* Ctrl-u */
+    term.c_cc[VWERASE]  = 0;     /* Ctrl-w */
+    term.c_cc[VLNEXT]   = 0;     /* Ctrl-v */
+    term.c_cc[VEOL2]    = 0;     /* '?0' */
+
+    //	tcflush(fdc, TCIFLUSH);
+    n = tcsetattr(fdc, TCSANOW, &term);
 over :
-	return (n);
-	}
+    return (n);
+}
 
 
 int main(int argc, char **argv) {
@@ -103,13 +104,43 @@ int main(int argc, char **argv) {
         write(fdc, "R", 1);
 
         // Obtain single data
-        c = read(fdc, str, 27);
+        static int ct;
+#if 1
+        int len = 0, len_max = DATA_LENGTH;
+          while (len < len_max) {
+            c = read(fdc, str+len, DATA_LENGTH-len);
+            if ( c > 0) {
+              len +=c;
+            } else {
+              //ROS_ERROR("could not read c... %d  len... %d\n", c, len);
+              //printf("Oh dear, something went wrong with read()! %s\n", strerror(errno));
+              continue;
+            }}
+#else
+          ct = 0;
+          while (ct < 100) {
+            c = read(fdc, str, DATA_LENGTH);
+            if ( c == DATA_LENGTH) {
+              break;
+            } else {
+              printf("Oh dear, something went wrong with read()! %s\n", strerror(errno));
+              ct++;
+              continue;
+            }}
+
+#endif
+
+
+        if (c != DATA_LENGTH)
+            ROS_WARN("=== error reciving data ... n = %d ===\n", c);
+
+
         if (c < 27)
-            {
-                ROS_WARN("=== error reciving data ... n = %d ===", c);
-            }
+        {
+            ROS_WARN("=== error reciving data ... n = %d ===", c);
+        }
         sscanf(str, "%1d%4hx%4hx%4hx%4hx%4hx%4hx",
-               &tick, &data[0], &data[1], &data[2], &data[3], &data[4], &data[5]);
+                &tick, &data[0], &data[1], &data[2], &data[3], &data[4], &data[5]);
 
         msg.header.frame_id = frame_id;
         msg.header.stamp = ros::Time::now();
