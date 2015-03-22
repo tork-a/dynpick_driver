@@ -3,17 +3,14 @@ DynPick ROS driver
 
 ROS driver for [Wacoh-tech force sensor](http://www.wacoh-tech.com/en/products/dynpick/).
 
-Usage
-==============
-
 Prerequisite
-----------------
+==============
 
  * (only tested on) Ubuntu 12.04 64bit.
  * ROS Hydro or Indigo needs to be installed.
 
 Install
---------
+==========
 
  1. Create `/etc/udev/rules.d/80-wakoh.rules` with the following line:
 
@@ -33,7 +30,9 @@ Bus 003 Device 004: ID 10c4:ea60 Cygnal Integrated Products, Inc. CP210x Composi
  ```
 
  4. Obtain `dynpick_driver` package.
+
  4-a. Via DEB (RECOMMENDED). Run `sudo apt-get install ros-hydro-dynpick-driver`.
+
  4-b. (Source build. Not recommended) clone this repository and build.
 
    ```
@@ -43,8 +42,8 @@ $ cd %YOUR_CATKING_WORKSPACE%
 $ catkin_make
    ```
 
-Run ROS node
-------------
+Operation
+==========
 
 ```
  $ roslaunch dynpick_driver sample.launch
@@ -58,7 +57,27 @@ Video is posted on ROS wiki (http://wiki.ros.org/action/subscribe/dynpick_driver
 Document
 ========
 
-See [ROS wiki](http://wiki.ros.org/dynpick_driver) for the document, tutorials.
+## ROS API
+
+### Published Topics
+
+`/force` ([geometry_msgs/WrenchStamped](http://docs.ros.org/api/geometry_msgs/html/msg/WrenchStamped.html))
+
+### Services
+
+/dynpick_driver_node/get_loggers ([roscpp/GetLoggers](http://wiki.ros.org/roscpp))
+/dynpick_driver_node/set_logger_level ([roscpp/SetLoggerLevel](http://wiki.ros.org/roscpp))
+
+### Parameters
+
+`/dynpick_driver_node/device`
+
+`/dynpick_driver_node/frame_id`
+
+`/dynpick_driver_node/rate`
+
+Other
+--------
 
 [API doc is available](http://docs.ros.org/hydro/api/dynpick_driver/html/annotated.html) also on ROS domain.
 
@@ -67,7 +86,7 @@ DEB build status
 
 | ROS Distro   | Source deb | Development Branch (travis)  | Development branch (ros.org) | Release Branch | binarydeb Precise AMD64 | Documentation (ros.org) |
 | ------------- | ------------- | ---------------------------- | ---------------------------- | -------------- | ----------------------- | ----------------------- |
-| Indigo  | N/A | N/A | N/A | N/A | N/A | N/A |
+| Indigo | [![Build Status](http://jenkins.ros.org/buildStatus/icon?job=ros-indigo-dynpick_driver_sourcedeb)](http://jenkins.ros.org/job/ros-indigo-dynpick_driver_sourcedeb/) | [![Build Status](https://travis-ci.org/tork-a/dynpick_driver.png?branch=indigo-devel)](https://travis-ci.org/tork-a/dynpick_driver) | [![Build Status](http://jenkins.ros.org/buildStatus/icon?job=devel-indigo-dynpick_driver)](http://jenkins.ros.org/job/devel-indigo-dynpick_driver/) | [![Build Status](https://travis-ci.org/lagadic/dynpick_driver.png?branch=indigo)](https://travis-ci.org/lagadic/dynpick_driver) | [![Build Status](http://jenkins.ros.org/buildStatus/icon?job=ros-indigo-dynpick_driver_binarydeb_precise_amd64)](http://jenkins.ros.org/job/ros-indigo-dynpick_driver_binarydeb_precise_amd64/) | [![Build Status](http://jenkins.ros.org/buildStatus/icon?job=doc-indigo-dynpick_driver)](http://jenkins.ros.org/job/doc-indigo-dynpick_driver/) |
 | Hydro | [![Build Status](http://jenkins.ros.org/buildStatus/icon?job=ros-hydro-dynpick_driver_sourcedeb)](http://jenkins.ros.org/job/ros-hydro-dynpick_driver_sourcedeb/) | [![Build Status](https://travis-ci.org/tork-a/dynpick_driver.png?branch=hydro-devel)](https://travis-ci.org/tork-a/dynpick_driver) | [![Build Status](http://jenkins.ros.org/buildStatus/icon?job=devel-hydro-dynpick_driver)](http://jenkins.ros.org/job/devel-hydro-dynpick_driver/) | [![Build Status](https://travis-ci.org/lagadic/dynpick_driver.png?branch=hydro)](https://travis-ci.org/lagadic/dynpick_driver) | [![Build Status](http://jenkins.ros.org/buildStatus/icon?job=ros-hydro-dynpick_driver_binarydeb_precise_amd64)](http://jenkins.ros.org/job/ros-hydro-dynpick_driver_binarydeb_precise_amd64/) | [![Build Status](http://jenkins.ros.org/buildStatus/icon?job=doc-hydro-dynpick_driver)](http://jenkins.ros.org/job/doc-hydro-dynpick_driver/) |
 
 [Devel Test Status](http://wiki.ros.org/regression_tests#Development_Tests)
