@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>dynpick_driver</name>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
   <description>ROS driver package for Wacohtech dynpick force sensor</description>
 
   <author email="kei.okada@gmail.com">Kei Okada</author>

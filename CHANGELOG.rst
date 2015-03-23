@@ -2,8 +2,8 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.4 (2015-03-23)
+------------------
 * Reusable launch files.
 * Contributors: Isaac I.Y. Saito
 
