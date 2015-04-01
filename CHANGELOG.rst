@@ -2,8 +2,8 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.5 (2015-04-01)
+------------------
 * (Feature) Do while to read enough data (fix for `#1 <https://github.com/tork-a/dynpick_driver/issues/1>`_)
 * (Doc) Add to readme new launch usage.
 * Contributors: Kei Okada, Isaac I.Y. Saito
