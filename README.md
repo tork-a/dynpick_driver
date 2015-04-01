@@ -6,7 +6,7 @@ ROS driver for [Wacoh-tech force sensor](http://www.wacoh-tech.com/en/products/d
 Prerequisite
 ==============
 
- * (only tested on) Ubuntu 12.04 64bit.
+ * (Only tested on) Ubuntu 12.04 and 14.04 64bit.
  * ROS Hydro or Indigo needs to be installed.
 
 Install
@@ -46,8 +46,20 @@ Operation
 ==========
 
 ```
- $ roslaunch dynpick_driver sample.launch
+ $ roslaunch dynpick_driver run.launch
 ```
+
+ You can configure some things by passing arguments:
+ ```
+ $ roslaunch dynpick_driver run.launch device:=/dev/ttyUSB0 rate:=50 sensor_frame_id:=/sensor/force rvizconfig:=`rospack find dynpick_driver`/launch/sample.rviz
+```
+
+ where:
+
+ * `device`: port name of the connected sensor device
+ * `rate`: refresh rate
+ * `sensor_frame_id`: This name will be used as a [tf](http://wiki.ros.org/tf) frame of the connected sensor device
+ * `rvizconfig`: name of the [RViz configuration file](http://wiki.ros.org/rviz/UserGuide#Configurations) that can be used for storing your own `RViz` setting
 
 Video is posted on ROS wiki (http://wiki.ros.org/action/subscribe/dynpick_driver)
 
