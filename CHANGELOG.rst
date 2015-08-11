@@ -2,6 +2,12 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [fix] Missing launch file variables
+* [doc] Add more doc
+* Contributors: Ron Tajima, Isaac I.Y. Saito
+
 0.0.5 (2015-04-01)
 ------------------
 * (Feature) Do while to read enough data (fix for `#1 <https://github.com/tork-a/dynpick_driver/issues/1>`_)
