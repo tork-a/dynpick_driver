@@ -2,8 +2,8 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.6 (2015-08-11)
+------------------
 * [fix] Missing launch file variables
 * [doc] Add more doc
 * Contributors: Ron Tajima, Isaac I.Y. Saito
