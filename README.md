@@ -1,6 +1,8 @@
 DynPick ROS driver
 ==================================
 
+![WDF-6M200-3](http://www.wacoh-tech.com/img/img_model_wdf_6m200_3.jpg "WDF-6M200-3")
+
 ROS driver for [Wacoh-tech force sensor](http://www.wacoh-tech.com/en/products/dynpick/).
 
 Prerequisite
@@ -45,13 +47,16 @@ $ catkin_make
 Operation
 ==========
 
+You can view the force and torque vectors in rviz by launching run.launch:
+
 ```
  $ roslaunch dynpick_driver run.launch
 ```
 
  You can configure some things by passing arguments:
+
  ```
- $ roslaunch dynpick_driver run.launch device:=/dev/ttyUSB0 rate:=50 sensor_frame_id:=/sensor/force rvizconfig:=`rospack find dynpick_driver`/launch/sample.rviz
+ $ roslaunch dynpick_driver run.launch device:=/dev/ttyUSB0 rate:=500 sensor_frame_id:=/sensor/force rvizconfig:=`rospack find dynpick_driver`/launch/sample.rviz
 ```
 
  where:
@@ -60,6 +65,7 @@ Operation
  * `rate`: refresh rate
  * `sensor_frame_id`: This name will be used as a [tf](http://wiki.ros.org/tf) frame of the connected sensor device
  * `rvizconfig`: name of the [RViz configuration file](http://wiki.ros.org/rviz/UserGuide#Configurations) that can be used for storing your own `RViz` setting
+ * `topic`: name of the published topic (WrenchStamped). Default is '/force'
 
 Video is posted on ROS wiki (http://wiki.ros.org/action/subscribe/dynpick_driver)
 

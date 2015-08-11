@@ -3,6 +3,7 @@
   <arg name="rate" default="1000" />
   <arg name="sensor_frame_id" default="/sensor" />
   <arg name="rvizconfig" default="$(find dynpick_driver)/launch/sample.rviz" />
+
   <include file="$(find dynpick_driver)/launch/run.launch">
     <arg name="device" value="$(arg device)" />
     <arg name="rate" value="$(arg rate)" />
@@ -11,4 +12,5 @@
   </include>
   <node pkg="tf" type="static_transform_publisher" name="base_to_sensor"
         args="0 0 0.5 0 0 0 /base /sensor 100" />
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rvizconfig)" />
 </launch>
