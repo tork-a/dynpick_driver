@@ -2,6 +2,11 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [feat] Whether or not running RViz
+* Contributors: Isaac I.Y. Saito
+
 0.0.6 (2015-08-11)
 ------------------
 * [fix] Missing launch file variables
