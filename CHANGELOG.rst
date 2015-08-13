@@ -2,8 +2,8 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.7 (2015-08-12)
+------------------
 * [feat] Whether or not running RViz
 * Contributors: Isaac I.Y. Saito
 
