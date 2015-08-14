@@ -2,8 +2,8 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.8 (2015-08-14)
+------------------
 * [doc] Utilize rosdoc_lite.
 * Contributors: Isaac I.Y. Saito
 
