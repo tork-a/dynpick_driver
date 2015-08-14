@@ -5,7 +5,7 @@
   <description>ROS driver package for Wacohtech dynpick force sensor</description>
 
   <author email="kei.okada@gmail.com">Kei Okada</author>
-  <maintainer email="iiysaito@opensource-robotics.tokyo.jp">Isaac IY Saito</maintainer>
+  <maintainer email="dev@opensource-robotics.tokyo.jp">TORK</maintainer>
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
@@ -31,6 +31,6 @@
     <!-- <metapackage/> -->
 
     <!-- Other tools can request additional information be placed here -->
-
+    <rosdoc config="rosdoc.yaml"/>
   </export>
 </package>
