@@ -1,8 +1,6 @@
 <launch>
   <arg name="device" default="/dev/ttyUSB0" />
   <arg name="rate" default="1000" />
-  <arg name="run_rviz" default="true" />
-  <arg name="rvizconfig" default="$(find dynpick_driver)/launch/sample.rviz" />
   <arg name="sensor_frame_id" default="/sensor" />
   <arg name="topic" default="/force" />
   <node pkg="dynpick_driver" name="dynpick_driver_node" type="dynpick_driver_node" >
@@ -11,9 +9,4 @@
     <param name="frame_id" value="$(arg sensor_frame_id)" />
     <remap from="/force" to="$(arg topic)" />
   </node>
-
-  <group if="$(arg run_rviz)">
-    <node pkg="rviz" type="rviz" name="rviz"
-          args="-d $(arg rvizconfig)" />
-  </group>
 </launch>

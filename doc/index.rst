@@ -47,11 +47,11 @@ Operation
 
 You can view the force and torque vectors in rviz by launching run.launch::
 
-  $ roslaunch dynpick_driver run.launch
+  $ roslaunch dynpick_driver sample.launch
 
  You can configure some things by passing arguments::
 
-  $ roslaunch dynpick_driver run.launch device:=/dev/ttyUSB0 rate:=500 sensor_frame_id:=/sensor/force rvizconfig:=`rospack find dynpick_driver`/launch/sample.rviz
+  $ roslaunch dynpick_driver sample.launch device:=/dev/ttyUSB0 rate:=500 sensor_frame_id:=/sensor/force rvizconfig:=`rospack find dynpick_driver`/launch/sample.rviz
 
  where:
 
