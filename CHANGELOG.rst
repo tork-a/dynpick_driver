@@ -2,6 +2,15 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [fix] run.launch not publishing Wrench topic issue.
+* [feat] Rename run.launch --> driver.launch
+* [sys] add test
+* [sys] add travis.yml
+* [doc] Switched to sphinx; this doxygen setting seems not working, and the doc we want by rosdoc is not about api docs but rst files. (`#20 <https://github.com/tork-a/dynpick_driver/issues/20>`_)
+* Contributors: Kei Okada, Isaac I.Y. Saito
+
 0.0.8 (2015-08-14)
 ------------------
 * [doc] Utilize rosdoc_lite.
