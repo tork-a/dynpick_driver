@@ -59,3 +59,13 @@ install(TARGETS dynpick_driver_node
 )
 
 install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+
+##########
+## Test ##
+##########
+
+if(CATKIN_ENABLE_TESTING)
+  find_package(catkin REQUIRED COMPONENTS rostest roslaunch)
+  roslaunch_add_file_check(launch/sample.launch)
+  roslaunch_add_file_check(launch/driver.launch)
+endif()

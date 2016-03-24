@@ -8,8 +8,8 @@ ROS driver for `Wacoh-tech force sensor <http://www.wacoh-tech.com/en/products/d
 Prerequisite
 ==============
 
- * (Only tested on) Ubuntu 12.04 and 14.04 64bit.
- * ROS Hydro or Indigo needs to be installed.
+ * (Only tested on) Ubuntu 14.04 64bit.
+ * ROS Indigo needs to be installed.
 
 Install
 ==========
@@ -33,7 +33,7 @@ Install
 
  4. Obtain `dynpick_driver` package.
 
- 4-a. Via DEB (RECOMMENDED). Run `sudo apt-get install ros-hydro-dynpick-driver`.
+ 4-a. Via DEB (RECOMMENDED). Run `sudo apt-get install ros-indigo-dynpick-driver`.
 
  4-b. (Source build. Not recommended) clone this repository and build.::
 
@@ -47,11 +47,11 @@ Operation
 
 You can view the force and torque vectors in rviz by launching run.launch::
 
-  $ roslaunch dynpick_driver run.launch
+  $ roslaunch dynpick_driver sample.launch
 
  You can configure some things by passing arguments::
 
-  $ roslaunch dynpick_driver run.launch device:=/dev/ttyUSB0 rate:=500 sensor_frame_id:=/sensor/force rvizconfig:=`rospack find dynpick_driver`/launch/sample.rviz
+  $ roslaunch dynpick_driver sample.launch device:=/dev/ttyUSB0 rate:=500 sensor_frame_id:=/sensor/force rvizconfig:=`rospack find dynpick_driver`/launch/sample.rviz
 
  where:
 
@@ -96,20 +96,19 @@ Parameters
 
   Publish rate. Default: 1000 hz
 
-Other
+Documentation
 --------
 
-`API doc is available <http://docs.ros.org/indigo/api/dynpick_driver/html/>`_ also on ros.org.
+`API doc is available <http://docs.ros.org/indigo/api/dynpick_driver/html/>`_ also on `ros.org.<http://wiki.ros.org/dynpick_driver>`_
 
 DEB build status
 ================
 
-+--------------+--------------------------------+-----------------------------------+------------------------------------+--------------------------------+--------------------------------------+-------------------------------+
-| ROS Distro   | Source deb                     | Development Branch (travis)       | Development branch (ros.org)       | Release Branch                 | binarydeb Precise AMD64              | Documentation (ros.org)       |
-+==============+================================+===================================+====================================+================================+======================================+===============================+
-| Indigo       | |indigo_buildstatus_sourcedeb| | |indigo_buildstatus_devel_travis| | |indigo_buildstatus_devel_ros.org| | |indigo_buildstatus_release|   | |indigo_buildstatus_binarydeb_amd64| | |indigo_buildstatus_doc|      |
-| Hydro        | |hydro_buildstatus_sourcedeb|  | |hydro_buildstatus_devel_travis|  | |hydro_buildstatus_devel_ros.org|  | |hydro_buildstatus_release|    | |hydro_buildstatus_binarydeb_amd64|  | |hydro_buildstatus_doc|       |
-+--------------+--------------------------------+-----------------------------------+------------------------------------+--------------------------------+--------------------------------------+-------------------------------+
++--------------+-----------------------------------+------------------------------------+--------------------------------+--------------------------------------+--------------------------------------+-------------------------------+
+| ROS Distro   | Development Branch (travis)       | Development branch (ros.org)       | Source deb                     | binarydeb Trusty i386                | binarydeb Trusty AMD64               | Documentation (ros.org)       |
++==============+===================================+====================================+================================+======================================+======================================+===============================+
+| Indigo       | |indigo_buildstatus_devel_travis| | |indigo_buildstatus_devel_ros.org| | |indigo_buildstatus_sourcedeb| | |indigo_buildstatus_binarydeb_amd64| | |indigo_buildstatus_binarydeb_amd64| | |indigo_buildstatus_doc|      |
++--------------+-----------------------------------+------------------------------------+--------------------------------+--------------------------------------+--------------------------------------+-------------------------------+
 
 `Devel Test Status <http://wiki.ros.org/regression_tests#Development_Tests>`_
 -------------------------------------------------------------------------------------
@@ -117,19 +116,12 @@ DEB build status
 ROS Indigo
 |indigo_job_devel-indigo-dynpick_driver|
 
-.. |img_model_wdf_6m200_3| image:: http://www.wacoh-tech.com/img/img_model_wdf_6m200_3.jpg
-.. |indigo_buildstatus_sourcedeb| image:: http://jenkins.ros.org/buildStatus/icon?job=ros-indigo-dynpick_driver_sourcedeb
-.. |indigo_buildstatus_devel_travis| image:: https://travis-ci.org/tork-a/dynpick_driver.png?branch=master
-.. |indigo_buildstatus_devel_ros.org| image:: http://jenkins.ros.org/buildStatus/icon?job=devel-indigo-dynpick_driver
-.. |indigo_buildstatus_release| image:: https://travis-ci.org/tork-a/dynpick_driver.png?branch=master
-.. |indigo_buildstatus_binarydeb_amd64| image:: http://jenkins.ros.org/buildStatus/icon?job=ros-indigo-dynpick_driver_binarydeb_trusty_amd64
-.. |indigo_buildstatus_doc| image:: http://jenkins.ros.org/buildStatus/icon?job=doc-indigo-dynpick_driver
-.. |indigo_job_devel-indigo-dynpick_driver| image:: http://jenkins.ros.org/job/devel-indigo-dynpick_driver/test/trend?job
 
-.. |hydro_buildstatus_sourcedeb| image:: http://jenkins.ros.org/buildStatus/icon?job=ros-hydro-dynpick_driver_sourcedeb
-.. |hydro_buildstatus_devel_travis| image:: https://travis-ci.org/tork-a/dynpick_driver.png?branch=master
-.. |hydro_buildstatus_devel_ros.org| image:: http://jenkins.ros.org/buildStatus/icon?job=devel-hydro-dynpick_driver
-.. |hydro_buildstatus_release| image:: https://travis-ci.org/tork-a/dynpick_driver.png?branch=master
-.. |hydro_buildstatus_binarydeb_amd64| image:: http://jenkins.ros.org/buildStatus/icon?job=ros-hydro-dynpick_driver_binarydeb_trusty_amd64
-.. |hydro_buildstatus_doc| image:: http://jenkins.ros.org/buildStatus/icon?job=doc-hydro-dynpick_driver
-.. |hydro_job_devel-indigo-dynpick_driver| image:: http://jenkins.ros.org/job/devel-hydro-dynpick_driver/test/trend?job
+.. |img_model_wdf_6m200_3| image:: http://www.wacoh-tech.com/img/img_model_wdf_6m200_3.jpg
+.. |indigo_buildstatus_devel_travis| image:: https://travis-ci.org/tork-a/dynpick_driver.png?branch=master
+.. |indigo_buildstatus_devel_ros.org| image:: http://build.ros.org/job/Idev__dynpick_driver__ubuntu_trusty_amd64/badge/icon
+.. |indigo_buildstatus_sourcedeb| image:: http://build.ros.org/job/Isrc_uT__dynpick_driver__ubuntu_trusty__source/badge/icon
+.. |indigo_buildstatus_binarydeb_i386| image:: http://build.ros.org/job/Ibin_uT64__dynpick_driver__ubuntu_trusty_i386__binary/badge/icon
+.. |indigo_buildstatus_binarydeb_amd64| image:: http://build.ros.org/job/Ibin_uT64__dynpick_driver__ubuntu_trusty_amd64__binary/badge/icon
+.. |indigo_buildstatus_doc| image:: http://build.ros.org/job/Idoc__dynpick_driver__ubuntu_trusty_amd64/badge/icon
+
