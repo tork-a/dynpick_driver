@@ -2,8 +2,8 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.9 (2016-03-23)
+------------------
 * [fix] run.launch not publishing Wrench topic issue.
 * [feat] Rename run.launch --> driver.launch
 * [sys] add test
