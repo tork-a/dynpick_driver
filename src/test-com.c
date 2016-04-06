@@ -93,6 +93,10 @@ int main() {
 	scanf("%d", &comNo);
 	comNo = 0;
 	sprintf(devname_out, "/dev/ttyUSB%d", comNo);
+	#if defined(__QNX__)
+	    comNo = 1;
+	    sprintf(devname_out, "/dev/serusb%d", comNo);
+	#endif
 	printf("Open %s for output\n", devname_out);
 	fd = open(devname_out, O_RDWR | O_NOCTTY | O_NONBLOCK);
 
@@ -114,8 +118,8 @@ int main() {
 	//if (!fd)
 	//	goto over;
 	#if defined(__QNX__)
-	slogf(0, _SLOG_INFO, "Started  input: %s fd = %d\n", devname_in, fd);
-	slogf(0, _SLOG_INFO, "        output: %s fd = %d\n", devname_out, fd);
+        slogf(0, _SLOG_INFO, "Started  input: %s fd = %d\n", devname_in, fd);
+	    slogf(0, _SLOG_INFO, "        output: %s fd = %d\n", devname_out, fd);
 	#endif
 
 	// Set Commport Settings
