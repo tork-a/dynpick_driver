@@ -129,7 +129,7 @@ int main() {
 	num = 0;
 
 	// Data Requests
-	struct timeval wr0, wr1, tcd0, tcd1;
+	struct timeval wr0, wr1, tcd0, tcd1, loop0, loop1, fscan0, fscan1;
 	gettimeofday(&wr0, NULL);
 	n = write(fd, "R", 1);
 	gettimeofday(&wr1, NULL);
@@ -166,6 +166,7 @@ int main() {
 		len = 0;
 		bzero(str, 27);  // Setting the first 27 bytes of the area starting `str` to zero.
 		while (len < DATA_LENGTH) {
+			gettimeofday(&loop0, NULL);
 			n = read(fd, str + len, DATA_LENGTH - len);
 			printf("read data (ret %d, %d bytes read))\n", n, len + n);
 			if (n > 0) {
@@ -177,6 +178,8 @@ int main() {
 				usleep(10000);
 				//goto loop_exit;
 			}
+			gettimeofday(&loop1, NULL);
+			printf("(Loop took %7.3f [msec]\n", DELTA_SEC(loop0, loop1) * 1000);
 		}
 		//goto skip;
 		loop_exit: {
@@ -186,11 +189,14 @@ int main() {
 			}
 		}
 
+		gettimeofday(&fscan0, NULL);
 		sscanf(str, "%1d%4hx%4hx%4hx%4hx%4hx%4hx", &tick, &data[0], &data[1],
 				&data[2], &data[3], &data[4], &data[5]);
 
 		sprintf(str, "%05d,%d,%05d,%05d,%05d,%05d,%05d,%05d\n", clk / tw * tw,
 				tick, data[0], data[1], data[2], data[3], data[4], data[5]);
+		gettimeofday(&fscan1, NULL);
+		printf("sscanf, sprintf took %7.3f [msec]\n", DELTA_SEC(fscan0, fscan1) * 1000);
 
 		fprintf(stderr, str);
 		//fprintf(fd, str);
