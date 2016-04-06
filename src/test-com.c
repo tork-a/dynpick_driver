@@ -12,6 +12,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/select.h>
+#if defined(__QNX__)
+  #include <sys/slog.h>
+#endif
 #include <sys/time.h>
 
 #define true		1
@@ -110,10 +113,10 @@ int main() {
 	//fd = fopen("test.txt", "w");
 	//if (!fd)
 	//	goto over;
-
-	// Commenting out slog that's only available on QNX.
-	//	slogf(0, _SLOG_INFO, "Started  input: %s fd = %d\n", devname_in, fd);
-	//	slogf(0, _SLOG_INFO, "        output: %s fd = %d\n", devname_out, fd);
+	#if defined(__QNX__)
+	slogf(0, _SLOG_INFO, "Started  input: %s fd = %d\n", devname_in, fd);
+	slogf(0, _SLOG_INFO, "        output: %s fd = %d\n", devname_out, fd);
+	#endif
 
 	// Set Commport Settings
 	SetComAttr(fd);
