@@ -158,11 +158,10 @@ int main() {
 		gettimeofday(&wr0, NULL);
 		n = write(fd, "R", 1);
 		gettimeofday(&wr1, NULL);
-		printf("write (in loop) took %7.3f [msec]\n", DELTA_SEC(tcd0, tcd1) * 1000);
 		gettimeofday(&tcd0, NULL);
 		tcdrain(fd);  //  The tcdrain() function waits until all output has been physically transmitted to the device associated with fd, or until a signal is received.
 		gettimeofday(&tcd1, NULL);
-		printf("(In loop) write took %7.3f, tcdrain took %7.3f [msec]\n", DELTA_SEC(wr0, wr1) * 1000, DELTA_SEC(tcd0, tcd1) * 1000);
+		printf("write took %7.3f, tcdrain took %7.3f [msec]\n", DELTA_SEC(wr0, wr1) * 1000, DELTA_SEC(tcd0, tcd1) * 1000);
 		printf("write data (ret %d)\n", n);
 
 		// Get Single data
@@ -183,7 +182,7 @@ int main() {
 				//goto loop_exit;
 			}
 			gettimeofday(&loop1, NULL);
-			printf("(Loop took %7.3f [msec]\n", DELTA_SEC(loop0, loop1) * 1000);
+			printf("Loop (read) took %7.3f [msec]\n", DELTA_SEC(loop0, loop1) * 1000);
 		}
 		//goto skip;
 		loop_exit: {
@@ -191,6 +190,7 @@ int main() {
 			for (i = 0; i < DATA_LENGTH; i++) {
 				fprintf(stderr, "%02x:", 0x0000ff & str[i]);
 			}
+			printf("\n");
 		}
 
 		gettimeofday(&fscan0, NULL);
