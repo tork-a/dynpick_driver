@@ -133,15 +133,13 @@ int main() {
 	num = 0;
 
 	// Data Requests
-	struct timeval wr0, wr1, tcd0, tcd1, loop0, loop1, fscan0, fscan1;
+	struct timeval wr0, wr1, loop0, loop1, fscan0, fscan1;
 	gettimeofday(&wr0, NULL);
 	n = write(fd, "R", 1);
 	gettimeofday(&wr1, NULL);
-	gettimeofday(&tcd0, NULL);
-	tcdrain(fd);
-	gettimeofday(&tcd1, NULL);
+	// tcdrain(fd); // Old legacy that is no longer needed. Besideds that, on QNX6.5.0 this is found taking unnecessarily too long (say 100msec).
 #define DELTA_SEC(start, end) (end.tv_sec - start.tv_sec + (end.tv_usec - start.tv_usec)/1e6)
-	printf("write took %7.3f, tcdrain took %7.3f [msec]\n", DELTA_SEC(wr0, wr1) * 1000, DELTA_SEC(tcd0, tcd1) * 1000);
+	printf("write took %7.3f [msec]\n", DELTA_SEC(wr0, wr1) * 1000);
 	printf("write data (ret %d)\n", n);
 
 	while (true) {
@@ -158,10 +156,8 @@ int main() {
 		gettimeofday(&wr0, NULL);
 		n = write(fd, "R", 1);
 		gettimeofday(&wr1, NULL);
-		gettimeofday(&tcd0, NULL);
-		tcdrain(fd);  //  The tcdrain() function waits until all output has been physically transmitted to the device associated with fd, or until a signal is received.
-		gettimeofday(&tcd1, NULL);
-		printf("write took %7.3f, tcdrain took %7.3f [msec]\n", DELTA_SEC(wr0, wr1) * 1000, DELTA_SEC(tcd0, tcd1) * 1000);
+		// tcdrain(fd);  //  The tcdrain() function waits until all output has been physically transmitted to the device associated with fd, or until a signal is received.
+		printf("write took %7.3f [msec]\n", DELTA_SEC(wr0, wr1) * 1000);
 		printf("write data (ret %d)\n", n);
 
 		// Get Single data
