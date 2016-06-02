@@ -2,6 +2,11 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Workaround for ROS buildfarm error. `#27 <https://github.com/tork-a/dynpick_driver/issues/27>`_
+* Contributors: Isaac I.Y. Saito
+
 0.0.10 (2016-06-02)
 -------------------
 * [feat] Add test binary for measuring device throughput on Ubuntu (tested against QNX). `#25 <https://github.com/tork-a/dynpick_driver/issues/25>`_
