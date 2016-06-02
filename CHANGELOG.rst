@@ -2,6 +2,12 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [feat] Add test binary for measuring device throughput on Ubuntu (tested against QNX). `#25 <https://github.com/tork-a/dynpick_driver/issues/25>`_
+* [doc] Add a tested product ID. `#26 <https://github.com/tork-a/dynpick_driver/issues/26>`_
+* Contributors: Isaac I.Y. Saito
+
 0.0.9 (2016-03-23)
 ------------------
 * [fix] run.launch not publishing Wrench topic issue.
