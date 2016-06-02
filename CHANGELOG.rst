@@ -2,8 +2,8 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.11 (2016-06-02)
+-------------------
 * Workaround for ROS buildfarm error. `#27 <https://github.com/tork-a/dynpick_driver/issues/27>`_
 * Contributors: Isaac I.Y. Saito
 
