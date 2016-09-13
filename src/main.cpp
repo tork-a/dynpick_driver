@@ -1,6 +1,6 @@
 #include <ros/ros.h>
 #include <geometry_msgs/WrenchStamped.h>
-
+#include <std_srvs/Trigger.h>
 
 #include	<stdio.h>
 #include	<fcntl.h>
@@ -9,8 +9,18 @@
 #include	<string.h>
 #include	<unistd.h>
 
-#define true		1
-#define false		0
+#include <mutex>
+#include <condition_variable>
+
+#define true                1
+#define false               0
+
+// TODO: Find out why and fix the multiple try approach
+#define RESET_COMMAND_TRY   3       // It only works when send several times.
+
+std::mutex m_;
+std::condition_variable cv_;
+int offset_reset_ = 0;
 
 int SetComAttr(int fdc)
 	{
@@ -55,6 +65,16 @@ over :
 	return (n);
 	}
 
+bool offsetRequest(std_srvs::Trigger::Request  &req,
+         std_srvs::Trigger::Response &res) {
+    std::unique_lock<std::mutex> lock(m_);
+    offset_reset_ = RESET_COMMAND_TRY;
+    while (offset_reset_ > 0) {cv_.wait(lock);}
+    lock.unlock();
+    res.message = "Reset offset command was send " + std::to_string(RESET_COMMAND_TRY) + " times to the sensor.";
+    res.success = true;
+    return true;
+}
 
 int main(int argc, char **argv) {
     int fdc;
@@ -70,7 +90,11 @@ int main(int argc, char **argv) {
     nh.param<std::string>("frame_id", frame_id, "/sensor");
     nh.param<double>("rate", rate, 1000);
 
+    ros::ServiceServer service = n.advertiseService("tare", offsetRequest);
     ros::Publisher pub = n.advertise<geometry_msgs::WrenchStamped>("force", 1000);
+
+    ros::AsyncSpinner spinner(2); // Use 2 threads
+    spinner.start();
 
     // Open COM port
     ROS_INFO("Open %s", devname.c_str());
@@ -99,40 +123,49 @@ int main(int argc, char **argv) {
 
         geometry_msgs::WrenchStamped msg;
 
-        // Request for initial data (2nd round)
-        write(fdc, "R", 1);
+        std::unique_lock<std::mutex> lock(m_);
+        if (offset_reset_ <= 0){
+            // Request for initial data (2nd round)
+            write(fdc, "R", 1);
 
-        // Obtain single data
-#define DATA_LENGTH 27
-        len = 0;
-        while ( len < DATA_LENGTH ) {
-                c = read(fdc, str+len, DATA_LENGTH-len);
-                if (c > 0) {
-                    len += c;
-                } else {
-                    ROS_DEBUG("=== need to read more data ... n = %d (%d) ===", c, len);
-                    continue;
+            // Obtain single data
+    #define DATA_LENGTH 27
+            len = 0;
+            while ( len < DATA_LENGTH ) {
+                    c = read(fdc, str+len, DATA_LENGTH-len);
+                    if (c > 0) {
+                        len += c;
+                    } else {
+                        ROS_DEBUG("=== need to read more data ... n = %d (%d) ===", c, len);
+                        continue;
+                    }
                 }
+            if ( len != DATA_LENGTH ) {
+                ROS_WARN("=== error reciving data ... n = %d ===", c);
             }
-        if ( len != DATA_LENGTH ) {
-            ROS_WARN("=== error reciving data ... n = %d ===", c);
+
+            sscanf(str, "%1d%4hx%4hx%4hx%4hx%4hx%4hx",
+                   &tick, &data[0], &data[1], &data[2], &data[3], &data[4], &data[5]);
+
+            msg.header.frame_id = frame_id;
+            msg.header.stamp = ros::Time::now();
+            msg.header.seq = clock++;
+
+            msg.wrench.force.x = (data[0]-8192)/1000.0;
+            msg.wrench.force.y = (data[1]-8192)/1000.0;
+            msg.wrench.force.z = (data[2]-8192)/1000.0;
+            msg.wrench.torque.x = (data[3]-8192)/1000.0;
+            msg.wrench.torque.y = (data[4]-8192)/1000.0;
+            msg.wrench.torque.z = (data[5]-8192)/1000.0;
+
+            pub.publish(msg);
+        } else {
+            // Request for offset reset
+            write(fdc, "O", 1);
+            offset_reset_ --;
+            cv_.notify_all();
         }
-
-        sscanf(str, "%1d%4hx%4hx%4hx%4hx%4hx%4hx",
-               &tick, &data[0], &data[1], &data[2], &data[3], &data[4], &data[5]);
-
-        msg.header.frame_id = frame_id;
-        msg.header.stamp = ros::Time::now();
-        msg.header.seq = clock++;
-
-        msg.wrench.force.x = (data[0]-8192)/1000.0;
-        msg.wrench.force.y = (data[1]-8192)/1000.0;
-        msg.wrench.force.z = (data[2]-8192)/1000.0;
-        msg.wrench.torque.x = (data[3]-8192)/1000.0;
-        msg.wrench.torque.y = (data[4]-8192)/1000.0;
-        msg.wrench.torque.z = (data[5]-8192)/1000.0;
-
-        pub.publish(msg);
+        lock.unlock();
         ros::spinOnce();
 
         loop_rate.sleep();
