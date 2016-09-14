@@ -2,8 +2,8 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.0 (2016-09-15)
+------------------
 * ADD urdf model `#32 <https://github.com/tork-a/dynpick_driver/issues/32>`_
   * Changed sample launch to show model instead of static tf-frame
 * Add tare service `#30 <https://github.com/tork-a/dynpick_driver/issues/30>`_
