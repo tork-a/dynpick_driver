@@ -2,6 +2,16 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* ADD urdf model `#32 <https://github.com/tork-a/dynpick_driver/issues/32>`_
+  * Changed sample launch to show model instead of static tf-frame
+* Add tare service `#30 <https://github.com/tork-a/dynpick_driver/issues/30>`_
+  * uses std::srvs::Trigger
+  * ordered dependencies alphabetically
+  * Need to send offset_reset command several times (3 at my tests) to work
+* Contributors: Lorenz Halt
+
 0.0.11 (2016-06-02)
 -------------------
 * Workaround for ROS buildfarm error. `#27 <https://github.com/tork-a/dynpick_driver/issues/27>`_
