@@ -3,7 +3,7 @@ project(dynpick_driver)
 
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
-  roscpp geometry_msgs
+  roscpp geometry_msgs std_srvs
 )
 
 ###################################
@@ -31,6 +31,8 @@ catkin_package(
 include_directories(
   ${catkin_INCLUDE_DIRS}
 )
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
 ## Declare a cpp executable
 add_executable(dynpick_driver_node src/main.cpp src/kbhit.c)
