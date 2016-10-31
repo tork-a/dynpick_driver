@@ -3,7 +3,11 @@
   <name>dynpick_driver</name>
   <version>0.1.0</version>
   <description>Driver package for Wacohtech dynpick force sensor. This contains <a href = "http://ros.org/">ROS</a>-compatible linux driver, as well as a communication test tool.<br />
-  As of May 2016, it's only tested with <a href = "http://www.wacoh-tech.com/products/dynpick/wdf-6m200-3.html">wdf-6m200-3</a>.
+  As of Oct 2016, it's tested with the following models of dynpick:
+  <ul>
+    <li><a href = "http://www.wacoh-tech.com/products/dynpick/wdf-6m200-3.html">wdf-6m200-3</a></li>
+    <li><a href = "http://www.wacoh-tech.com/en/products/dynpick/200n.html">WEF-6A200</a> (confirmed <a href = "https://github.com/tork-a/dynpick_driver/pull/35#issuecomment-256031851">here</a>)</li>
+  </ul>
   </description>
 
   <author email="kei.okada@gmail.com">Kei Okada</author>
