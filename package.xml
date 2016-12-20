@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>dynpick_driver</name>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <description>Driver package for Wacohtech dynpick force sensor. This contains <a href = "http://ros.org/">ROS</a>-compatible linux driver, as well as a communication test tool.<br />
   As of Oct 2016, it's tested with the following models of dynpick:
   <ul>

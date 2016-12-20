@@ -2,8 +2,8 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.1 (2016-12-20)
+------------------
 * [fix] Add a missing folder to be installed `#37 <https://github.com/tork-a/dynpick_driver/issues/37>`_
 * [capability] Add a tested product model. `#35 <https://github.com/tork-a/dynpick_driver/issues/35>`_
 * Contributors: Isaac I.Y. Saito
