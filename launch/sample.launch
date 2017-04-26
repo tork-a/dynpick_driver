@@ -13,9 +13,11 @@
     <arg name="topic" value="$(arg topic)" />
   </include>
 
-  <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rvizconfig)" /> 
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rvizconfig)"
+        if="$(arg run_rviz)" /> 
   
   <param name="robot_description" command="$(find xacro)/xacro '$(find dynpick_driver)/urdf/dynpick_WEF-6A200.xacro' sensor_frame_id:=$(arg sensor_frame_id)" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
 </launch>
