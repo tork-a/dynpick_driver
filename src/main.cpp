@@ -27,9 +27,9 @@ int offset_reset_ = 0;
 
 int SetComAttr(int fdc)
     {
-    int         n;
+    int n;
 
-    struct termios  term;
+    struct termios term;
 
 
     // Set baud rate
@@ -118,7 +118,8 @@ int main(int argc, char **argv) {
     int clock = 0;
     double rate;
     std::string devname, frame_id;
-        bool auto_adjust = true;
+    bool auto_adjust = true;
+    int frq_div = 1;
 
     fdc = -1;
 
@@ -127,7 +128,8 @@ int main(int argc, char **argv) {
     nh.param<std::string>("device", devname, "/dev/ttyUSB0");
     nh.param<std::string>("frame_id", frame_id, "/sensor");
     nh.param<double>("rate", rate, 1000);
-        nh.param<bool>("acquire_calibration", auto_adjust, true);
+    nh.param<bool>("acquire_calibration", auto_adjust, true);
+    nh.param<int>("frequency_div", frq_div, 1);
 
     ros::ServiceServer service = n.advertiseService("tare", offsetRequest);
     ros::Publisher pub = n.advertise<geometry_msgs::WrenchStamped>("force", 1000);
@@ -165,6 +167,24 @@ int main(int argc, char **argv) {
         ROS_INFO("Calibration from sensor:\n%.3f LSB/N, %.3f LSB/N, %.3f LSB/N, %.3f LSB/Nm, %.3f LSB/Nm, %.3f LSB/Nm",
         calib[0], calib[1], calib[2], calib[3], calib[4], calib[5]);
     }
+
+        // Set frequncy divider filter
+        if (frq_div == 1 || frq_div == 2 || frq_div == 4 || frq_div == 8) {
+            char cmd[2];
+            sprintf(cmd, "%dF", frq_div);
+            write(fdc, cmd, 2);
+            ROS_INFO("Set the frequency divider to %s", cmd);
+
+            // check if successful
+            write(fdc, "0F", 2);
+            char repl[3];
+            readCharFromSocket(fdc, 3, repl);
+            ROS_ERROR_COND(repl[0]-'0' != frq_div, "Response by sensor is not as expected! Current Filter: %dF", repl[0]-'0');
+        } else {
+            ROS_WARN("Not setting frequency divider. Parameter out of acceptable values {1,2,4,8}: %d", frq_div);
+        }
+
+
 
 
     // Request for initial single data
