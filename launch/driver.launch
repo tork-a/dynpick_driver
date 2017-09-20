@@ -8,5 +8,6 @@
     <param name="rate" value="$(arg rate)" />
     <param name="frame_id" value="$(arg sensor_frame_id)" />
     <remap from="/force" to="$(arg topic)" />
+    <param name="acquire_calibration" value="true"/>
   </node>
 </launch>
