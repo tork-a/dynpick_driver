@@ -38,6 +38,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 add_executable(dynpick_driver_node src/main.cpp src/kbhit.c)
 target_link_libraries(dynpick_driver_node ${catkin_LIBRARIES})
 
+add_executable(dynpick_com_tester src/test-com.c)
+
 #############
 ## Install ##
 #############
@@ -53,7 +55,7 @@ target_link_libraries(dynpick_driver_node ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS dynpick_driver_node
+install(TARGETS dynpick_driver_node dynpick_com_tester
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

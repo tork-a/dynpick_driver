@@ -1,9 +1,4 @@
 // test-com.c
-
-/*
- * Build with `gcc -o`. See https://github.com/start-jsk/rtmros_hironx/blob/6eb507f3ad0ed368d909960dd59ddaac0f77f496/hironx_ros_bridge/robot/dynpick/Makefile#L9
- */
-
 #define 	DEBUGSS	0
 
 #include	<stdio.h>
