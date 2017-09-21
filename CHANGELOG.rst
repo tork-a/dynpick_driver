@@ -2,6 +2,34 @@
 Changelog for package dynpick_driver
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix ROS buildfarm error
+
+  * revert `#27 <https://github.com/tork-a/dynpick_driver/issues/27>`_  (`#40 <https://github.com/tork-a/dynpick_driver/issues/40>`_ )
+  * add header file and use `fputs` instaed of `fprintf` to avoid compile error
+     * warning: implicit declaration of function
+     * warning: format not a string literal and no format arguments
+
+* [sample.launch] args improvement (`#38 <https://github.com/tork-a/dynpick_driver/issues/38>`_)
+
+  * [sample.launch] Choose running RViz or not.
+  * [sample.launch] pass wrench topic name.
+
+* Adding more build-in features by sensor (`#39 <https://github.com/tork-a/dynpick_driver/issues/39>`_)
+
+  * Fix reading problems with A6200 version
+    the reply seems to differ for some reason, however this fix it by cleaning up the socket after sensitivity request and filter request
+  * Set built-in filter at startup
+  * Add automatical adjustment of LSB/N
+
+    * generalized "readFromSocket" function
+    * flushing socket at beginning (to avoid byte offset)
+    * receiving calibration (LSB/N and LSB/Nm) from sensor and multiplying it to data
+    * tabs vs. spaces cleanup
+
+* Contributors: Isaac I.Y. Saito, Kei Okada, Lorenz Halt
+
 0.1.1 (2016-12-20)
 ------------------
 * [fix] Add a missing folder to be installed `#37 <https://github.com/tork-a/dynpick_driver/issues/37>`_
