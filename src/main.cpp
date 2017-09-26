@@ -212,12 +212,12 @@ int main(int argc, char **argv) {
             msg.header.stamp = ros::Time::now();
             msg.header.seq = clock++;
 
-            msg.wrench.force.x = (data[0]-8192)/1000.0*calib[0];
-            msg.wrench.force.y = (data[1]-8192)/1000.0*calib[1];
-            msg.wrench.force.z = (data[2]-8192)/1000.0*calib[2];
-            msg.wrench.torque.x = (data[3]-8192)/1000.0*calib[3];
-            msg.wrench.torque.y = (data[4]-8192)/1000.0*calib[4];
-            msg.wrench.torque.z = (data[5]-8192)/1000.0*calib[5];
+            msg.wrench.force.x = (data[0]-8192)/calib[0];
+            msg.wrench.force.y = (data[1]-8192)/calib[1];
+            msg.wrench.force.z = (data[2]-8192)/calib[2];
+            msg.wrench.torque.x = (data[3]-8192)/calib[3];
+            msg.wrench.torque.y = (data[4]-8192)/calib[4];
+            msg.wrench.torque.z = (data[5]-8192)/calib[5];
 
             pub.publish(msg);
         } else {
