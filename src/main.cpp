@@ -72,7 +72,7 @@ bool offsetRequest(std_srvs::Trigger::Request  &req,
          std_srvs::Trigger::Response &res) {
     std::unique_lock<std::mutex> lock(m_);
     offset_reset_ = RESET_COMMAND_TRY;
-    while (offset_reset_ > 0) {cv_.wait(lock);}
+    cv_.wait(lock, []{ return offset_reset_ <= 0; });
     lock.unlock();
     res.message = "Reset offset command was send " + std::to_string(RESET_COMMAND_TRY) + " times to the sensor.";
     res.success = true;
@@ -220,15 +220,14 @@ int main(int argc, char **argv) {
             msg.wrench.torque.z = (data[5]-8192)/calib[5];
 
             pub.publish(msg);
+            lock.unlock();
         } else {
             // Request for offset reset
             write(fdc, "O", 1);
             offset_reset_ --;
+            lock.unlock();
             cv_.notify_all();
         }
-        lock.unlock();
-        ros::spinOnce();
-
         loop_rate.sleep();
     }
 
