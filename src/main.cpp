@@ -102,12 +102,15 @@ bool readCharFromSocket(const int& fdc, const int& length, char* reply){
     int c = 0;
     while ( len < length ) {
         c = read(fdc, reply+len, length-len);
-        if (c >= 0) {
+        if (c > 0) {
             len += c;
-        } else {
+        } else if (c == 0) {
             ROS_DEBUG("=== need to read more data ... n = %d (%d) ===", c, len);
-            continue;
+            usleep(100); // polling @ 0.1 ms
+        } else {
+            ROS_WARN("read() error detected");
         }
+        //ROS_INFO("c=%d, len=%d, length=%d", c, len, length);
     }
     // This could actually check if data was received and may return on timeout with false
     return true;
