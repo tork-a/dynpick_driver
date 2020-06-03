@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!--  Creative Commons Attribution 4.0 International Public License (CC BY 4.0) -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="dynpick_WEF_6A200" >
 
   <xacro:macro name="dynpick" params="parent prefix sensor_frame_id *origin">
