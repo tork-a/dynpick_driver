@@ -171,7 +171,7 @@ int main(int argc, char **argv) {
 
     // Set frequncy divider filter
     if (frq_div == 1 || frq_div == 2 || frq_div == 4 || frq_div == 8) {
-        char cmd[2];
+        char cmd[3];
         sprintf(cmd, "%dF", frq_div);
         write(fdc, cmd, 2);
         ROS_INFO("Set the frequency divider to %s", cmd);
