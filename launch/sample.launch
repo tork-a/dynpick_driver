@@ -5,12 +5,16 @@
   <arg name="run_rviz" default="true" />
   <arg name="rvizconfig" default="$(find dynpick_driver)/launch/sample.rviz" />
   <arg name="topic" default="/force" />
+  <arg name="frequency_div" default="1" />
+  <arg name="acquire_calibration" value="true"/>
 
   <include file="$(find dynpick_driver)/launch/driver.launch">
     <arg name="device" value="$(arg device)" />
     <arg name="rate" value="$(arg rate)" />
     <arg name="sensor_frame_id" value="$(arg sensor_frame_id)" />
     <arg name="topic" value="$(arg topic)" />
+    <arg name="frequency_div" value="$(arg frequency_div)" />
+    <arg name="acquire_calibration" value="$(arg acquire_calibration)"/>
   </include>
 
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rvizconfig)"
