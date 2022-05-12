@@ -6,7 +6,7 @@
   <arg name="rvizconfig" default="$(find dynpick_driver)/launch/sample.rviz" />
   <arg name="topic" default="/force" />
   <arg name="frequency_div" default="1" />
-  <arg name="acquire_calibration" value="true"/>
+  <arg name="acquire_calibration" default="true"/>
 
   <include file="$(find dynpick_driver)/launch/driver.launch">
     <arg name="device" value="$(arg device)" />

@@ -4,7 +4,7 @@
   <arg name="sensor_frame_id" default="/sensor" />
   <arg name="topic" default="/force" />
   <arg name="frequency_div" default="1" />
-  <arg name="acquire_calibration" value="true"/>
+  <arg name="acquire_calibration" default="true"/>
 
   <node pkg="dynpick_driver" name="dynpick_driver_node" type="dynpick_driver_node" >
     <param name="device" value="$(arg device)" />
