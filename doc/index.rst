@@ -97,9 +97,24 @@ Parameters
   Publish rate. Default: 1000 hz
 
 Documentation
---------
+---------------
 
 `API doc is available <http://docs.ros.org/indigo/api/dynpick_driver/html/>`_ also on `ros.org.<http://wiki.ros.org/dynpick_driver>`_
+
+Troubleshooting
+=====================
+
+1. ``/force`` topic exists but does not publish any data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There is a possibility that the conditions are such that serial communication error occurs.
+
+Please try launch options of ``frequency_div:=-1`` and ``acquire_calibration:=false`` 
+for sample.launch or driver.launch as follows.
+
+``$ roslaunch dynpick_driver driver.launch frequency_div:=-1 acquire_calibration:=false``
+
+``$ roslaunch dynpick_driver sample.launch frequency_div:=-1 acquire_calibration:=false``
 
 DEB build status
 ================
