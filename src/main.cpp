@@ -47,8 +47,7 @@
 // TODO: Find out why and fix the multiple try approach
 #define RESET_COMMAND_TRY   3       // It only works when send several times.
 
-#define DATA_LENGTH 27
-#define CALIB_DATA_LENGTH 46
+#define DATA_LENGTH 27 // 1 + 4 * 6 + 2 (Byte)
 
 std::mutex m_;
 std::condition_variable cv_;
@@ -79,7 +78,7 @@ int SetComAttr(int fdc)
     term.c_cc[VKILL]    = 0;     /* @ */
     term.c_cc[VEOF]     = 4;     /* Ctrl-d */
     term.c_cc[VTIME]    = 0;
-    term.c_cc[VMIN]     = 0;
+    term.c_cc[VMIN]     = 1;     /* set for Blocking serial port */
     term.c_cc[VSWTC]    = 0;     /* '?0' */
     term.c_cc[VSTART]   = 0;     /* Ctrl-q */
     term.c_cc[VSTOP]    = 0;     /* Ctrl-s */
@@ -108,35 +107,22 @@ bool offsetRequest(std_srvs::Trigger::Request  &req,
     return true;
 }
 
-bool clearSocket(const int& fdc, char* leftover){
-    int len = 0;
-    int c = 0;
-    int length = 255;
-    while ( len < length ) {
-        c = read(fdc, leftover+len, length-len);
-        if (c > 0) {
-            len += c;
-            ROS_DEBUG("More data to clean up; n = %d (%d) ===", c, len);
+bool readCharFromSocket(const int& fdc, const int& max_len, char* reply){
+    int cur_len = 0;
+    int read_len = 0;
+    while ( cur_len <= max_len ){
+        read_len = read(fdc, &reply[cur_len], max_len);
+        if (read_len > 0) {
+            cur_len += read_len;
+            if( cur_len >= 3 && reply[cur_len-2] == '\r' && reply[cur_len-1] == '\n' ){
+                break; // end of sensor reply reached (=CRLF)
+            }
+        } else if (read_len == 0) {
+            ROS_WARN("=== need to read more data ... n = %d (%d) ===", read_len, cur_len);
         } else {
-            ROS_DEBUG("No more data on socket");
-            break;
+            ROS_ERROR("read() error detected");
         }
-    }
-    // This could actually check if data was received and may return on timeout with false
-    return true;
-}
-
-bool readCharFromSocket(const int& fdc, const int& length, char* reply){
-    int len = 0;
-    int c = 0;
-    while ( len < length ) {
-        c = read(fdc, reply+len, length-len);
-        if (c >= 0) {
-            len += c;
-        } else {
-            ROS_DEBUG("=== need to read more data ... n = %d (%d) ===", c, len);
-            continue;
-        }
+//        ROS_INFO("read_len=%d, cur_len=%d, max_len=%d", read_len, cur_len, max_len);
     }
     // This could actually check if data was received and may return on timeout with false
     return true;
@@ -169,7 +155,7 @@ int main(int argc, char **argv) {
     // Open COM port
     ROS_INFO("Open %s", devname.c_str());
 
-    fdc = open(devname.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
+    fdc = open(devname.c_str(), O_RDWR | O_NOCTTY);
     if (fdc < 0) {
         ROS_ERROR("could not open %s\n", devname.c_str());
         return -1;
@@ -181,36 +167,35 @@ int main(int argc, char **argv) {
     // Set baud rate of COM port
     SetComAttr(fdc);
 
-    // Clean up
-    char trash[255];
-    clearSocket(fdc, trash);
+    // Show product info
+    write(fdc, "V", 1);
+    char reply[999];
+    readCharFromSocket(fdc, 999, reply);
+    ROS_INFO("Get product info:\n%s",reply);
 
-    float calib[6] = {1, 1, 1, 1, 1, 1};
+     float calib[6] = {1, 1, 1, 1, 1, 1};
     // Autoadjust
     if (auto_adjust){
         write(fdc, "p", 1);
-        char reply[CALIB_DATA_LENGTH];
-        readCharFromSocket(fdc, CALIB_DATA_LENGTH, reply);
+        char reply[999];
+        readCharFromSocket(fdc, 999, reply);
         sscanf(reply,"%f,%f,%f,%f,%f,%f",
         &calib[0], &calib[1], &calib[2], &calib[3], &calib[4], &calib[5]);
         ROS_INFO("Calibration from sensor:\n%.3f LSB/N, %.3f LSB/N, %.3f LSB/N, %.3f LSB/Nm, %.3f LSB/Nm, %.3f LSB/Nm",
         calib[0], calib[1], calib[2], calib[3], calib[4], calib[5]);
-        clearSocket(fdc, trash);
     }
 
-    // Set frequncy divider filter
+    // Set frequncy divider filter (some products won't reply ?)
     if (frq_div == 1 || frq_div == 2 || frq_div == 4 || frq_div == 8) {
         char cmd[3];
         sprintf(cmd, "%dF", frq_div);
         write(fdc, cmd, 2);
         ROS_INFO("Set the frequency divider to %s", cmd);
-
         // check if successful
         write(fdc, "0F", 2);
         char repl[3];
         readCharFromSocket(fdc, 3, repl);
         ROS_ERROR_COND(repl[0]-'0' != frq_div, "Response by sensor is not as expected! Current Filter: %dF", repl[0]-'0');
-        clearSocket(fdc, trash);
     } else {
         ROS_WARN("Not setting frequency divider. Parameter out of acceptable values {1,2,4,8}: %d", frq_div);
     }
@@ -248,6 +233,9 @@ int main(int argc, char **argv) {
             msg.wrench.torque.y = (data[4]-8192)/calib[4];
             msg.wrench.torque.z = (data[5]-8192)/calib[5];
 
+            ROS_INFO_THROTTLE(1,"[%s] %.1f %.1f %.1f %.1f %.1f %.1f", devname.c_str(),
+                               msg.wrench.force.x, msg.wrench.force.y, msg.wrench.force.z,
+                               msg.wrench.torque.x, msg.wrench.torque.y, msg.wrench.torque.z);
             pub.publish(msg);
             lock.unlock();
         } else {
